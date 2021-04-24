@@ -24,7 +24,10 @@ def prep_auth(jwt_token, installation_id):
         f"https://api.github.com/app/installations/{installation_id}/access_tokens",
         headers={"Authorization": f"Bearer {jwt_token}"},
     ).json()["token"]
-    auth = {"Authorization": f"Token {token}"}
+    auth = {
+        "Authorization": f"Token {token}",
+        "Accept": "application/vnd.github.everest-preview+json"
+    }
     print("Got bot access token")
     return auth
 
@@ -32,20 +35,24 @@ def prep_auth(jwt_token, installation_id):
 def main():
     private_key = os.environ["APP_PRIVATE_KEY"]
     installation_id = os.environ["INSTALLATION_ID"]
+    repo = os.environ["TARGET_REPO"]
+    workflow_name = os.environ["TARGET_WORKFLOW"]
+
     jwt_token = make_jwt_token(private_key)
     auth = prep_auth(jwt_token, installation_id)
-
-    repo = "amarao/hiddentruth"
-    workflow_name = "CI"
     workflows = requests.get(
         f"https://api.github.com/repos/{repo}/actions/workflows", headers=auth
     ).json()
     for workflow in workflows["workflows"]:
         if workflow["name"] == workflow_name:
-            requests.post(
-                f"https://api.github.com/repos/{repo}/actions/workflows/{workflow['id']}/dispatches"
+            res = requests.post(
+                f"https://api.github.com/repos/{repo}/actions/workflows/{workflow['id']}/dispatches",
+                headers=auth,
+                json={"ref": "master"},
             )
-            print(f"Dispatched workflow {workflow_name} for {repo}")
+            print(
+                f"Dispatched workflow {workflow_name} for {repo}. status={res.status_code}, text={res.text}"
+            )
             sys.exit(0)
     else:
         print(f"Unable to find workflow {workflow_name} in {repo}")

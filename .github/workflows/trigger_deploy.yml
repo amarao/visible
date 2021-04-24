@@ -2,25 +2,29 @@
 
 name: Trigger deploy
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-     - name: Install dependencies
-       run: sudo apt install -y python3 python3-jwt python3-requests
-      
-     - name: Checkout
-       uses: actions/checkout@v2
-     
-     - name: Send event
-       run: ./dispatch_workflow.py
+      - name: Install dependencies
+        run: sudo apt install -y python3 python3-jwt python3-requests
 
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Send event
+        run: ./dispatch_workflow.py
+        env:
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+          INSTALLATION_ID: 16488929
+          TARGET_REPO: "amarao/hiddentruth"
+          TARGET_WORKFLOW: "CI"
