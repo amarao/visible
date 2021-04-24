@@ -19,27 +19,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: chrnorm/deployment-action@releases/v1
-        name: Create GitHub deployment
-        id: deployment
-        with:
-          token: "${{ github.token }}"
-          #target_url: http://
-          environment: truth
-      - name: Update deployment status (success)
-        if: success()
-        uses: chrnorm/deployment-status@releases/v1
-        with:
-          token: "${{ github.token }}"
-          target_url: http://my-app-url.com
-          state: "success"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-
-      - name: Update deployment status (failure)
-        if: failure()
-        uses: chrnorm/deployment-status@releases/v1
-        with:
-          token: "${{ github.token }}"
-          target_url: http://my-app-url.com
-          state: "failure"
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Send event
+        run: |
+          curl -XPOST -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/YOURNAME/APPLICATION_NAME/dispatches --data '{"event_type": "build_application"}'
