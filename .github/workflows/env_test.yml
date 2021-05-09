@@ -5,6 +5,7 @@ name: Env access
 # Controls when the action will run.
 on:
   workflow_dispatch:
+  push:
 jobs:
   deploy:
     environment: testing
