@@ -6,9 +6,6 @@ import os
 import sys
 import time
 
-JOB_WAIT_TIMEOUT = 60  # timeout to wait for triggered job to be created (not finished)
-JOB_TIMEOUT = 600  # timeout to wait fo job to finish
-
 
 def make_jwt_token(private_key, app_id):
     jwt_payload = {
