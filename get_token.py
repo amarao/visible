@@ -45,9 +45,7 @@ def main():
     github_env_file = os.environ["GITHUB_ENV"]  # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
     jwt_token = make_jwt_token(private_key, app_id)
     ghs_token = get_token(jwt_token, get_installation_id(jwt_token))
-    with open(github_env_file, "a") as env_file:
-        env_file.write(f"GITHUB_TOKEN={ghs_token}\n")
-    print("Updated GITHUB_TOKEN in environment file")
+    print(f"::set-output name=ghs_token::{ghs_token}")
 
 
 if __name__ == "__main__":
