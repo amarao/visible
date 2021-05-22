@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir hid || true
           mkdir vis || true
+          echo  ${{ steps.token.outputs.leak }}
       - name: Checkout hid
         uses: actions/checkout@v2
         with:
