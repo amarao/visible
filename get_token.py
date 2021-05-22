@@ -42,10 +42,8 @@ def main():
     github_env_file = os.environ["GITHUB_ENV"]  # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
     jwt_token = make_jwt_token(private_key, app_id)
     ghs_token = get_token(jwt_token, get_installation_id(jwt_token))
-    print(f"::add-mask::SECRET_LEAK")
-    print(f"::set-output name=ghs_token::{ghs_token}")
     print(f"::add-mask::{ghs_token}")
-    print(f"::set-output name=leak::SECRET_LEAK")
+    print(f"::set-output name=ghs_token::{ghs_token}")
     print("Set output variable ghs_token")
 
 

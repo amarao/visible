@@ -48,7 +48,11 @@ def main():
             res = requests.post(
                 f"https://api.github.com/repos/{repo}/actions/workflows/{workflow['id']}/dispatches",
                 headers=auth,
-                json={"ref": "master"},
+                json={
+                    "ref": "master",
+                    "inputs": {"truth": "found"}
+
+                },
             )
             print(
                 f"Dispatched workflow {workflow_name} for {repo}. status={res.status_code}, text={res.text}"
