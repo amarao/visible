@@ -31,13 +31,13 @@ jobs:
         with:
           repository: 'amarao/hiddentruth'
           path: hid
-          token: ${{ steps.token.ghs_token }}
+          token: ${{ steps.token.outputs.ghs_token }}
       - name: Checkout vis
         uses: actions/checkout@v2
         with:
           repository: 'amarao/visible'
           path: vis
-          token: ${{ steps.token.ghs_token }}
+          token: ${{ steps.token.outputs.ghs_token }}
       - name: Report
         run: |
           find vis
