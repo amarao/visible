@@ -28,7 +28,7 @@ jobs:
       - name: Checkout hid
         uses: actions/checkout@v2
         with:
-          repository: 'amarao/hiddentruth/'
+          repository: 'amarao/hiddentruth'
           path: hid
       - name: Checkout vis
         uses: actions/checkout@v2
