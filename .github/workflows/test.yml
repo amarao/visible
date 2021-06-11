@@ -1,0 +1,15 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Test
+
+# Controls when the action will run.
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  clone:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: check cpu
+        run: cat /proc/cpuinfo
