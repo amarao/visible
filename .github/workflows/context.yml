@@ -1,0 +1,16 @@
+name: Context
+
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Report
+        run: |
+          echo github.action=${{ github.action }}
+          echo github.actor=${{ github.actor }}
+          echo github.event_name=${{ github.event_name }}
+          
