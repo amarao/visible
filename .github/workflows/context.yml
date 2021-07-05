@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Report
-        run: |
-          echo github.action=${{ github.action }}
-          echo github.actor=${{ github.actor }}
-          echo github.base_ref=${{ github.base_ref }}
-          echo github.sha=${{ github.sha }}
+      - uses: .github/actions/report
+        with:
+          action: ${{ github.action }}
+          actor: ${{ github.actor }}
+          base_ref: ${{ github.base_ref }}
+          sha: ${{ github.sha }}
