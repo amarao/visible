@@ -7,6 +7,9 @@ inputs:
   target_repo:
     required: true
     description: Target repo to clone
+  target_ref:
+    required: true
+    description: git ref in target repo
 runs:
   using: "composite"
   steps:
@@ -15,4 +18,6 @@ runs:
     - run: echo ${{ inputs.sha }}
       shell: bash
     - run: echo ${{ inputs.target_repo }}
+      shell: bash
+    - run: echo ${{ inputs.target_ref }}
       shell: bash

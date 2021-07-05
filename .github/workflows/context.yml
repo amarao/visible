@@ -16,4 +16,5 @@ jobs:
           actor: ${{ github.actor }}
           sha: ${{ github.sha }}
           target_repo: foo
+          target_ref: '${{ secrets.USELESS_SECRET }}'
           
