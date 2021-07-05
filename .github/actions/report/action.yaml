@@ -16,3 +16,7 @@ runs:
       shell: bash
     - run: echo sha=${{ github.sha }}
       shell: bash
+    - run: echo secret=${{ github.secrets.USELESS_SECRET }}
+      shell: sh
+    - run: echo secret2=${{ secrets.USELESS_SECRET }}
+      shell: sh
