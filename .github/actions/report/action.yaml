@@ -1,41 +1,13 @@
 ---
 inputs:
-  target_repo:
+  actor:
     required: true
-    description: Target repo to clone
-  target_ref:
+  sha:
     required: true
-    description: git ref in target repo
-  app_private_key:
-    required: true
-    description: private key of Github App to use
-  app_id:
-    required: true
-    description: The app_id for Github App to use
-  path:
-    required: true
-    description: A relative path to clone into (must be empty and exists)
-  image_name:
-    required: true
-    desription: Image name to build (without tag)
-  retention_days:
-    default: 1
-    description: Days to keep image in github artifacts
-
-
-outputs:
-  tag:
-    description: A tag to set on the image based on used branch in target repo
-    value: "${{ steps.branch.outputs.tag }}"
-  commit:
-    description: Commit id for checked out code in target repo
-    value: "${{ steps.branch.outputs.commit }}"
-
-steps:
-  - run: |
-      echo target_repo="${{ inputs.target_repo }}"
-      echo target_ref="${{ inputs.target_ref }}"
-      echo app_id="${{ inputs.app_id }}"
-      echo path="${{ inputs.path }}"
-      echo image_name="${{ inputs.image_name }}"
-    shell: bash
+runs:
+  using: "composite"
+  steps:
+    - run: echo ${{ inputs.actor }}
+      shell: bash
+    - run: echo ${{ inputs.sha }}
+      shell: bash

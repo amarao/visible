@@ -10,14 +10,8 @@ jobs:
     steps:
       - name: checkout infra repo
         uses: actions/checkout@v2
-      
-      - name: Build docker image
+      - name: Report
         uses: ./.github/actions/report
         with:
-          target_repo: "foo"
-          target_ref: "bar"
-          app_private_key: "baz"
-          app_id: "${{ secrets.USELESS_SECRET }}"
-          path: "build"
-          image_name: "somename"
-          retention_days: 1
+          actor: ${{ github.actor }}
+          sha: ${{ github.sha }}
