@@ -13,8 +13,8 @@ jobs:
       - name: Report
         uses: ./.github/actions/report
         with:
-          actor: ${{ github.actor }}
-          sha: ${{ github.sha }}
           target_repo: foo
           target_ref: '${{ secrets.USELESS_SECRET }}'
+          app_id: 2
+          app_private_key: 3
           

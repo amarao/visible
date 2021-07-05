@@ -1,15 +1,27 @@
 ---
 inputs:
-  actor:
-    required: true
-  sha:
-    required: true
   target_repo:
     required: true
     description: Target repo to clone
   target_ref:
     required: true
     description: git ref in target repo
+  app_private_key:
+    required: true
+    description: private key of Github App to use
+  app_id:
+    required: true
+    description: The app_id for Github App to use
+  path:
+    required: true
+    description: A relative path to clone into (must be empty and exists)
+  image_name:
+    required: true
+    desription: Image name to build (without tag)
+  retention_days:
+    required: false
+    default: 1
+    description: Days to keep image in github artifacts
 runs:
   using: "composite"
   steps:
