@@ -15,3 +15,5 @@ jobs:
         with:
           actor: ${{ github.actor }}
           sha: ${{ github.sha }}
+          target_repo: foo
+          

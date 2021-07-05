@@ -4,10 +4,15 @@ inputs:
     required: true
   sha:
     required: true
+  target_repo:
+    required: true
+    description: Target repo to clone
 runs:
   using: "composite"
   steps:
     - run: echo ${{ inputs.actor }}
       shell: bash
     - run: echo ${{ inputs.sha }}
+      shell: bash
+    - run: echo ${{ inputs.target_repo }}
       shell: bash
