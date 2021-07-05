@@ -1,22 +1,17 @@
 ---
-# inputs:
-#   action:
-#     required: true
-#   base_ref:
-#     required: true
-#   sha:
-#     required: true
-# outputs:
+inputs:
+  actor:
+    required: true
+  base_ref:
+    required: true
+  sha:
+    required: true
 runs:
   using: "composite"
   steps:
-    - run: echo action=${{ github.action }}
+    - run: echo ${{ inputs.actor }}
       shell: bash
-    - run: echo actor=${{ github.actor }}
+    - run: echo ${{ inputs.base_ref }}
       shell: bash
-    - run: echo sha=${{ github.sha }}
+    - run: echo ${{ inputs.sha }}
       shell: bash
-    - run: echo secret=${{ github.secrets.USELESS_SECRET }}
-      shell: sh
-    - run: echo secret2=${{ secrets.USELESS_SECRET }}
-      shell: sh
