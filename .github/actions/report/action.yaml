@@ -1,5 +1,4 @@
 ---
-name: "Report"
 inputs:
   action:
     required: true
@@ -13,11 +12,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo ${{ inputs.action }}
+    - run: echo action=${{ inputs.action }}
       shell: bash
-    - run: echo ${{ inputs.actor }}
+    - run: echo actor=${{ inputs.actor }}
       shell: bash
-    - run: echo ${{ inputs.base_ref }}
+    - run: echo base_ref=${{ inputs.base_ref }}
       shell: bash
-    - run: echo ${{ inputs.sha }}
+    - run: echo sha=${{ inputs.sha }}
       shell: bash
