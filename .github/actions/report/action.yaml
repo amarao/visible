@@ -19,6 +19,5 @@ runs:
       shell: bash
     - run: echo ${{ inputs.base_ref }}
       shell: bash
-    - name: Final report
-      run: echo $${ inputs.sha }}
+    - run: echo ${{ inputs.sha }}
       shell: bash
