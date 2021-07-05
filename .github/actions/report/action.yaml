@@ -2,8 +2,6 @@
 inputs:
   action:
     required: true
-  actor:
-    required: true
   base_ref:
     required: true
   sha:
@@ -14,7 +12,7 @@ runs:
   steps:
     - run: echo action=${{ inputs.action }}
       shell: bash
-    - run: echo actor=${{ inputs.actor }}
+    - run: echo actor=${{ github.actor }}
       shell: bash
     - run: echo base_ref=${{ inputs.base_ref }}
       shell: bash
