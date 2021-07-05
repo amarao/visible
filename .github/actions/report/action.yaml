@@ -32,6 +32,9 @@ outputs:
     value: "${{ steps.branch.outputs.commit }}"
 
 steps:
+  - run: echo hello
+    shell: bash
+  - run: echo path="${{ inputs.path }}"
   - run: |
       echo target_repo="${{ inputs.target_repo }}"
       echo target_ref="${{ inputs.target_ref }}"
