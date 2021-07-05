@@ -14,5 +14,4 @@ jobs:
         uses: ./.github/actions/report
         with:
           actor: ${{ github.actor }}
-          base_ref: ${{ github.base_ref }}
           sha: ${{ github.sha }}

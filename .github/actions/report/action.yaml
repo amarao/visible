@@ -2,16 +2,12 @@
 inputs:
   actor:
     required: true
-  base_ref:
-    required: true
   sha:
     required: true
 runs:
   using: "composite"
   steps:
     - run: echo ${{ inputs.actor }}
-      shell: bash
-    - run: echo ${{ inputs.base_ref }}
       shell: bash
     - run: echo ${{ inputs.sha }}
       shell: bash
