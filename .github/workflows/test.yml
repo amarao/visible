@@ -8,7 +8,8 @@ on:
 jobs:
   clone:
     runs-on: ubuntu-latest
-    
+    container:
+      image: amarao/ansido:latest
     steps:
-      - name: check cpu
-        run: cat /proc/cpuinfo
+      - name: version
+        run: ansible --version
