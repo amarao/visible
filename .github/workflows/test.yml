@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 jobs:
   clone:
-    runs-on: ubuntu-latest
     container:
       image: amarao/ansido:latest
     steps:
