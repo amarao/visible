@@ -19,7 +19,7 @@ jobs:
           echo name ${{ github.event_name }}
   deploy:
     runs-on: ubuntu-20.04
-    if: github.event.pull_request.merged == true || github.event_name == "workflow_dispatch"
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     steps:
       - name: report
         run: |
