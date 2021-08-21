@@ -16,9 +16,10 @@ jobs:
         run: |
           echo merged ${{ github.event.pull_request.merged }}
           echo number ${{ github.event.number }}
+          echo name ${{ github.event_name }}
   deploy:
     runs-on: ubuntu-20.04
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true or false
     steps:
       - name: report
         run: |
