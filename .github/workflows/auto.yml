@@ -3,10 +3,15 @@ name: Autodeploy
 
 "on":
   workflow_dispatch:
-  push:
-    branches:
-      - master
+  pull_request:
+    types:
+      - closed
 jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: debug
+        run: echo ${{ github.event }}
   deploy:
     runs-on: ubuntu-20.04
     if: github.event.pull_request.merged == 'true'
