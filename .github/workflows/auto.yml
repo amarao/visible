@@ -19,7 +19,7 @@ jobs:
           echo name ${{ github.event_name }}
   deploy:
     runs-on: ubuntu-20.04
-    if: github.event.pull_request.merged == true or false
+    if: github.event.pull_request.merged == true || false
     steps:
       - name: report
         run: |
