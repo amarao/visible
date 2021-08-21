@@ -4,6 +4,8 @@ name: Autodeploy
 "on":
   workflow_dispatch:
   pull_request:
+    branches:
+      - master
     types:
       - closed
 jobs:
@@ -11,10 +13,20 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: debug
-        run: echo ${{ github.event }}
+        run: |
+          echo merged ${{ github.event.pull_request.merged }}
+          echo number ${{ github.event.number }}
   deploy:
     runs-on: ubuntu-20.04
-    if: github.event.pull_request.merged == 'true'
+    if: github.event.pull_request.merged == true
     steps:
       - name: report
-        run: echo Run deploy!
+        run: |
+          echo PR ${{ github.event.number }} has been merged
+
+  close_job:
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-20.04
+    steps:
+    - run: |
+        echo PR ${{ github.event.number }} has been closed without being merged
