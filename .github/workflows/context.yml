@@ -2,7 +2,6 @@ name: Context
 
 on:
   workflow_dispatch:
-  push:
 jobs:
   debug:
     runs-on: ubuntu-latest
@@ -17,4 +16,7 @@ jobs:
           target_ref: '${{ secrets.USELESS_SECRET }}'
           app_id: 2
           app_private_key: 3
+          path: path_foo
+          image_name: bar_image
+          retention_days: 33
           
