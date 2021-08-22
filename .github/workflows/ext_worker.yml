@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y python3-pip
-
+      - name: checkout infra repo
+        uses: actions/checkout@v2
       - name: Install req
         run: sudo pip install -r requirements.txt
       - name: Checkout
