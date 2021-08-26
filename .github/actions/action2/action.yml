@@ -7,4 +7,3 @@ runs:
     - uses: actions/checkout@v2
     - run: echo action2 after
       shell: bash
-    - uses: ./.github/actions/action1
