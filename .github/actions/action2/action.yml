@@ -2,5 +2,8 @@
 runs:
   using: "composite"
   steps:
-    - run: echo action2
+    - run: echo action2 before
+      shell: bash
+    - uses: actions/checkout@v2
+    - run: echo action2 after
       shell: bash
