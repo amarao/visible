@@ -1,0 +1,6 @@
+---
+runs:
+  using: "composite"
+  steps:
+    - run: echo action2
+      shell: bash
