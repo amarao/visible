@@ -4,7 +4,6 @@ runs:
   steps:
     - run: echo action1
       shell: bash
-    - uses: ./.github/actions/action2
     - run: echo action1 middle
       shell: bash
     - uses: ./.github/actions/action2
