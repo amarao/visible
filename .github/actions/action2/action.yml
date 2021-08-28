@@ -1,8 +1,15 @@
 ---
+inputs:
+  somelist:
+    requred: true
 runs:
   using: "composite"
   steps:
-    - run: echo action2 before
+    - run: echo all ${{ inputs.somelist }}
+      shell: bash
+    - run: echo one ${{ inputs.somelist[0] }}
+      shell: bash
+    - run: echo two ${{ inputs.somelist[1] }}
       shell: bash
     - uses: actions/checkout@v2
     - run: echo action2 after
