@@ -9,8 +9,7 @@ runs:
       shell: bash
     - uses: ./.github/actions/action2
       with:
-        somelist:
-          - first_elem
-          - second_elem
+        somelist: |
+          ["first_elem", "second_elem"]
     - run: echo action1 end
       shell: bash

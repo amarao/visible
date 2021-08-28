@@ -5,11 +5,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo all ${{ inputs.somelist }}
+    - run: echo all ${{ fromJSON(inputs.somelist) }}
       shell: bash
-    - run: echo one ${{ inputs.somelist[0] }}
+    - run: echo one ${{ fromJSON(inputs.somelist)[0] }}
       shell: bash
-    - run: echo two ${{ inputs.somelist[1] }}
+    - run: echo two ${{ fromJSON(inputs.somelist)[1] }}
       shell: bash
     - uses: actions/checkout@v2
     - run: echo action2 after
