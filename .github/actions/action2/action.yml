@@ -5,6 +5,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - run: echo all ${{ inputs.somelist }}
+      shell: bash
     - run: echo one ${{ fromJSON(inputs.somelist)[0] }}
       shell: bash
     - run: echo two ${{ fromJSON(inputs.somelist)[1] }}
