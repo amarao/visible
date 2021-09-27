@@ -1,0 +1,25 @@
+---
+hypervisor:
+  hosts:
+    localhost:
+       ansible_connection: local
+       hypervisor_ip: 10.200.44.1
+
+all:
+  vars:
+    golden_image_file: /var/lib/libvirt/images/ubuntu_golden.qcow2
+    virt_type: kvm
+
+vms:
+  hosts:
+    vm2:
+      uuid: 3cee901c-3861-4d3a-80ab-f4092fe4e406
+      ansible_host: 10.200.44.2
+  vars:
+    hypervisor: localhost
+    vm_image_file: /var/lib/libvirt/images/{{ inventory_hostname }}.qcow2
+    vm_image_size: 16G
+    vm_memory: 524288
+    ansible_ssh_private_key_file: .vm_ssh
+    ansible_user: ubuntu
+    ansible_python_interpreter: /usr/bin/python3

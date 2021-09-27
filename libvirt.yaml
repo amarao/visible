@@ -1,0 +1,94 @@
+---
+- name: Install and configure libvirt with QEMU
+  hosts: hypervisor
+  gather_facts: true
+  become: true
+  pre_tasks:
+    - name: Install packages
+      become: true
+      apt:
+        name:
+          - sudo
+          - qemu-system-x86
+          - libvirt-daemon
+          - libvirt-daemon-system
+          - genisoimage
+          - libvirt-daemon
+          - eatmydata
+          - python3-libvirt
+          - python3-diskimage-builder
+          - python3-lxml
+        state: present
+        update_cache: true
+      tags: apt
+    - name: Fix mkisofs symlink
+      become: true
+      file:
+        src: genisoimage
+        path: /usr/bin/mkisofs
+        state: link
+        owner: root
+        group: root
+
+    - name: Generate new keypair to access VMs
+      become: false
+      openssh_keypair:
+        path: .vm_ssh  # root of the project
+      register: ssh_key
+      tags: [ssh]
+
+    - name: Create an image
+      become: true
+      command: /usr/bin/disk-image-create
+        -o '{{ golden_image_file }}'
+        ubuntu-minimal vm cloud-init cloud-init-datasources -p openssh-server
+      args:
+        creates: "{{ golden_image_file }}"
+      environment:
+        DIB_RELEASE: "focal"
+        DIB_CLOUD_INIT_DATASOURCES: NoCloud,ConfigDrive
+        DIB_DEV_USER_PWDLESS_SUDO: 'true'
+
+  roles:
+    - libvirt_network
+  vars:
+    vm_group: "{{ groups.vms }}"
+
+- name: Create VMs
+  hosts: vms
+  become: true
+  gather_facts: false
+  roles:
+    - libvirt_vms
+  tags: [vm]
+
+- name: Wait for hosts
+  hosts: vms
+  gather_facts: false
+  tasks:
+    - name: waiting for ssh
+      wait_for_connection:
+    - name: Disable unified hierarchy in systemd for Cadvisor to work
+      become: true
+      copy:
+        content: |
+          GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} systemd.unified_cgroup_hierarchy=0"
+        dest: /etc/default/grub.d/unified.cfg
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - update apt
+        - update grub
+  handlers:
+    - name: update apt
+      become: true
+      apt:
+        update_cache: true
+    - name: update grub
+      become: true
+      command: update-grub
+      notify: reboot
+    - name: reboot
+      become: true
+      reboot:
