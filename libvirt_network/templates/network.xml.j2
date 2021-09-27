@@ -1,0 +1,17 @@
+<network>
+  <name>vm_network</name>
+  <uuid>617d97ed-48e6-49d8-8008-caaec4279d7a</uuid>
+  <forward mode='nat'/>
+  <bridge name='vm_network' stp='on' delay='0'/>
+  <mac address='{{ "52:54:00"|random_mac(seed="vm_network") }}'/>
+  <ip address='{{ hypervisor_ip }}' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='10.200.44.1' end='10.200.44.254'/>
+      {% for host in vm_group %}
+      <host mac='{{ "52:54:00"|random_mac(seed=host) }}' name='{{ host }}' ip='{{ hostvars[host].ansible_host }}'>
+        <lease expiry='100500' unit='hours'/>
+      </host>
+      {%endfor %}
+    </dhcp>
+  </ip>
+</network>
