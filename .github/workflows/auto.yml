@@ -14,4 +14,4 @@ jobs:
           sudo apt update
           sudo apt install -y python3-libvirt libvirt-clients libvirt-daemon libvirt-daemon-system libvirt-daemon-driver-qemu
       - name: VM
-        run: ansible -i virt_inv.yaml libvirt.yaml
+        run: ansible-playbook -i virt_inv.yaml libvirt.yaml
