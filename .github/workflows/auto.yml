@@ -11,4 +11,5 @@ jobs:
         run: sudo pip install ansible
       - name: install apt
         run: sudo apt install libvirt libvirt-daemon libvirt-daemon-system libvirt-daemon-driver-qemu
-      - name: ansible -i virt_inv.yaml libvirt.yaml
+      - name: VM
+        run: ansible -i virt_inv.yaml libvirt.yaml
