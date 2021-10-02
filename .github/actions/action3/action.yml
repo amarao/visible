@@ -3,4 +3,6 @@ runs:
   using: "composite"
   steps:
     - run: echo ${{ github.token }} (was here)
+      shell: bash
     - run: echo ${{ github.token }} |wc -c
+      shell: bash
