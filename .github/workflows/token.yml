@@ -1,0 +1,11 @@
+---
+name: token test
+
+on:
+  push:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ./.github/actions/action3
