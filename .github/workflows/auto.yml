@@ -13,3 +13,5 @@ jobs:
       - name: debug
         run: |
           echo hello
+      - name: Install sops
+        uses: .github/actions/sops_install
