@@ -2,34 +2,14 @@
 name: Autodeploy
 
 "on":
-  workflow_dispatch:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-    types:
-      - closed
+  push:
+
 jobs:
   debug:
     runs-on: ubuntu-20.04
     steps:
+      - name: checkout infra repo
+        uses: actions/checkout@v2
       - name: debug
         run: |
-          echo merged ${{ github.event.pull_request.merged }}
-          echo number ${{ github.event.number }}
-          echo name ${{ github.event_name }}
-  deploy:
-    runs-on: ubuntu-20.04
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: report
-        run: |
-          echo PR ${{ github.event.number }} has been merged
-
-  close_job:
-    if: github.event.pull_request.merged == false
-    runs-on: ubuntu-20.04
-    steps:
-    - run: |
-        echo PR ${{ github.event.number }} has been closed without being merged
+          echo hello
