@@ -3,6 +3,9 @@ runs:
   using: "composite"
   steps:
     - run: |
+        cat secret|awk -F= '{print $2}'
+      shell: bash
+    - run: |
         echo 'DATA<<EOF' >> $GITHUB_ENV
         cat secret >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
