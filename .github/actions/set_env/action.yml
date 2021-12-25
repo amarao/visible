@@ -3,7 +3,9 @@ runs:
   using: "composite"
   steps:
     - run: |
-        echo 'DATA: <<EOF' >> $GITHUB_ENV
+        echo 'DATA<<EOF' >> $GITHUB_ENV
         cat secret >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
+        echo '----------'
+        cat $GITHUB_ENV
       shell: bash
