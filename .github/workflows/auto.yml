@@ -19,4 +19,4 @@ jobs:
           push: false
           tags: foo:latest
           builder: ${{ steps.buildx.outputs.name }}
-          secret-files: secret
+          secret-files: FOO=./secret
