@@ -22,4 +22,4 @@ jobs:
           push: false
           tags: foo:latest
           builder: ${{ steps.buildx.outputs.name }}
-          build-args: ${{ env.DIFFERENT }}
+          build-args: ${{ env.DATA }}

@@ -12,3 +12,4 @@ runs:
         echo '----------'
         cat $GITHUB_ENV
       shell: bash
+      if: ${{env.GOO}} == 'BAR'
