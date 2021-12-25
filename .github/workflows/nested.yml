@@ -2,9 +2,7 @@
 name: Nested actions
 
 "on":
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   test:
