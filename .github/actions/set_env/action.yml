@@ -3,7 +3,7 @@ runs:
   using: "composite"
   steps:
     - run: |
-        cat secret|awk -F= '{print $2}'
+        cat secret|awk -F= '{print $2}'|xargs -I SECRET echo ::add-mask::SECRET
       shell: bash
     - run: |
         echo 'DATA<<EOF' >> $GITHUB_ENV
