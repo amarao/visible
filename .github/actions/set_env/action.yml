@@ -1,0 +1,6 @@
+---
+runs:
+  using: "composite"
+  steps:
+    - run: echo DATA="$(cat secret)" >> $GITHUB_ENV
+      shell: bash
