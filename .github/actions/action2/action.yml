@@ -11,8 +11,8 @@ runs:
 
     - run: echo run only if true, value is ${{ inputs.foo }}
       shell: bash
-      if: ${{ inputs.foo == true }}
+      if: "inputs.foo == true"
 
     - run: echo run only if false, value is ${{ inputs.foo }}
       shell: bash
-      if: ${{ ! inputs.foo == false }}
+      if: "!(inputs.foo == false)"
