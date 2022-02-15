@@ -6,13 +6,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo  foo is "*${{ inputs.foo }}*", json ${{ toJSON([inputs.foo]) }}
+    - run: echo  foo is "*${{ inputs.foo }}*", json ${{ toJSON(inputs.foo) }}, from json ${{ fromJSON(inputs.foo) }}
       shell: bash
 
     - run: echo run only if true, value is ${{ inputs.foo }}
       shell: bash
-      if: "inputs.foo == true"
+      if: "fromJSON(inputs.foo) == true"
 
     - run: echo run only if false, value is ${{ inputs.foo }}
       shell: bash
-      if: "!(inputs.foo == false)"
+      if: "!(fromJSON(inputs.foo) == false)"
