@@ -9,6 +9,8 @@ runs:
     - run: echo  foo is "*${{ inputs.somelist }}*"
       shell: bash
     - run: echo 'run only if true'
+      shell: bash
       if: ${{ inputs.foo }}
     - run: echo 'run only if false'
+      shell: bash
       if: ${{ ! inputs.foo }}
