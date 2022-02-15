@@ -1,5 +1,5 @@
 ---
-name: Nested actions
+name: test
 
 "on":
   workflow_dispatch:
@@ -10,7 +10,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: action
-        uses: ./.github/actions/action1
-      - name: final
-        run: echo final
+      - name: action with false
+        uses: ./.github/actions/action2
+        with:
+          foo: false
+      - name: action with true
+        uses: ./.github/actions/action2
+        with:
+          foo: true
+      - name: action with default
+        uses: ./.github/actions/action2

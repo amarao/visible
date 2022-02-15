@@ -1,16 +1,14 @@
 ---
 inputs:
-  somelist:
-    requred: true
+  foo:
+    requred: false
+    default: false
 runs:
   using: "composite"
   steps:
-    - run: echo all ${{ inputs.somelist }}
+    - run: echo  foo is "*${{ inputs.somelist }}*"
       shell: bash
-    - run: echo one ${{ fromJSON(inputs.somelist)[0] }}
-      shell: bash
-    - run: echo two ${{ fromJSON(inputs.somelist)[1] }}
-      shell: bash
-    - uses: actions/checkout@v2
-    - run: echo action2 after
-      shell: bash
+    - run: echo 'run only if true'
+      if: ${{ inputs.foo }}
+    - run: echo 'run only if false'
+      if: ${{ ! inputs.foo }}
