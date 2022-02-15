@@ -8,9 +8,11 @@ runs:
   steps:
     - run: echo  foo is "*${{ inputs.foo }}*", json "${{ toJSON(inputs.foo) }}"
       shell: bash
-    - run: echo 'run only if true'
+
+    - run: echo run only if true, value is ${{ inputs.foo }}
       shell: bash
-      if: ${{ inputs.foo }}
-    - run: echo 'run only if false'
+      if: ${{ inputs.foo == true }}
+
+    - run: echo run only if false, value is ${{ inputs.foo }}
       shell: bash
-      if: ${{ ! inputs.foo }}
+      if: ${{ ! inputs.foo == false }}
