@@ -6,7 +6,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo  foo is "*${{ inputs.foo }}*", json "${{ toJSON(inputs.foo) }}"
+    - run: echo  foo is "*${{ inputs.foo }}*", json ${{ toJSON([inputs.foo]) }}
       shell: bash
 
     - run: echo run only if true, value is ${{ inputs.foo }}
