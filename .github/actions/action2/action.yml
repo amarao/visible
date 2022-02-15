@@ -15,4 +15,4 @@ runs:
 
     - run: echo run only if false, value is ${{ inputs.foo }}
       shell: bash
-      if: "!(fromJSON(inputs.foo) == false)"
+      if: "(fromJSON(inputs.foo) == false)"
