@@ -8,6 +8,7 @@ name: test
 jobs:
   test:
     runs-on: ubuntu-20.04
+    environment: production
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -21,3 +22,4 @@ jobs:
           foo: true
       - name: action with default
         uses: ./.github/actions/action2
+      - run: echo ok
