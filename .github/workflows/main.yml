@@ -21,3 +21,4 @@ jobs:
           foo: true
       - name: action with default
         uses: ./.github/actions/action2
+      - run: echo ok
