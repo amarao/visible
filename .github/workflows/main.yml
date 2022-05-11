@@ -8,8 +8,11 @@ name: test
 jobs:
   test:
     runs-on: ubuntu-20.04
+    concurrency: ci-${{ github.ref }}
     environment: production
     steps:
+      - run: |
+            echho a${{ github.ref[-2:]  }}a
       - name: checkout
         uses: actions/checkout@v2
       - name: action with false
