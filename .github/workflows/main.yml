@@ -3,6 +3,11 @@ name: test
 
 "on":
   workflow_dispatch:
+    inputs:
+      foo:
+        default: auto
+        required: true
+        description: foo
   push:
 
 jobs:
@@ -10,16 +15,4 @@ jobs:
     runs-on: ubuntu-20.04
     environment: production
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: action with false
-        uses: ./.github/actions/action2
-        with:
-          foo: false
-      - name: action with true
-        uses: ./.github/actions/action2
-        with:
-          foo: true
-      - name: action with default
-        uses: ./.github/actions/action2
-      - run: echo ok
+      - run: echo ${{ github.event.inputs.foo }}
