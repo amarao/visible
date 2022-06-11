@@ -10,6 +10,9 @@ name: test
         description: foo
   push:
 
+env:
+    BAZ: "${bar}"
+
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -36,4 +39,6 @@ jobs:
           with open(os.environ.get("GITHUB_STEP_SUMMARY"), "a") as f:
             f.write(f"Using IAAC number {num}\n")
         shell: python3 {0}
-      - run: echo ${{ steps.set-iaac-name.outputs.iaac-name }}
+      - run: echo ${{ $BAZ }}
+        env:
+          bar: '${{ steps.set-iaac-name.outputs.iaac-name }}'
