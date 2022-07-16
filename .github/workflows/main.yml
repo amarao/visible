@@ -3,42 +3,11 @@ name: test
 
 "on":
   workflow_dispatch:
-    inputs:
-      foo:
-        default: auto
-        required: true
-        description: foo
   push:
 
-env:
-    BAZ: "${bar}"
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
-    environment: production
+    runs-on: self-hosted
     steps:
-      - id: set-iaac-name
-        run: |
-          import os
-          IAAC_LIST = ["0", "1", "2", "3"]
-          iaac_max = len(IAAC_LIST)
-          foo = "${{ github.event.inputs.foo }}"
-          if foo == "" or foo == "auto":
-            num = str(int(os.environ.get('GITHUB_SHA'), 16) % iaac_max)
-          else:
-            if foo in ("0", "1", "2", "3"):
-              num = foo
-            else:
-              print(f"Bad selection {foo}!")
-              raise SystemExit(1)
-          if num == 0:
-            num = ""
-          else:
-              print(f"::set-output name=iaac-name::{num}")
-          with open(os.environ.get("GITHUB_STEP_SUMMARY"), "a") as f:
-            f.write(f"Using IAAC number {num}\n")
-        shell: python3 {0}
-      - run: echo ${{ $BAZ }}
-        env:
-          bar: '${{ steps.set-iaac-name.outputs.iaac-name }}'
+      - run: ansible --version
