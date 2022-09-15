@@ -8,6 +8,8 @@ name: test
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - run: ansible --version
+      - run: echo ${{secrets.MULTILINE_SECRET }}a
+        shell: bash
+
