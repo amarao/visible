@@ -3,13 +3,20 @@ name: test
 
 "on":
   workflow_dispatch:
+    inputs:
+      foo:
+        description: foo
+        required: true
   push:
-
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{secrets.MULTILINE_SECRET }}a
-        shell: bash
+      - run: |
+          import os
+          print(repr(os.environ.get("INPUTS")))
+        shell: /usr/bin/python3 {0}
 
+        env:
+          INPUTS: ${{ toJSON(inputs) }}
