@@ -16,6 +16,11 @@ jobs:
       - run: |
           echo ::warning ::something fishy
       - run: |
+          for a in `seq 1 10000`; do
+              echo -e ::notice ::changed something here, number $a \n second line $a
+          done
+        shell: bash
+      - run: |
           import os
           print(repr(os.environ.get("INPUTS")))
         shell: /usr/bin/python3 {0}
