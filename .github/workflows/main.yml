@@ -14,10 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ::warning ::something fishy
+          for a in `seq 1 10000`; do
+              echo -e ::warning ::warning here, number $a
+          done
       - run: |
           for a in `seq 1 10000`; do
-              echo -e ::notice ::changed something here, number $a \n second line $a
+              echo -e ::notice ::changed something here, number $a \\n second line $a
           done
         shell: bash
       - run: |
