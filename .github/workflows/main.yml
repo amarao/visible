@@ -24,17 +24,19 @@ jobs:
         shell: bash
 
       - run: |
-            echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
-            echo
-            for a in `seq 1 10000`; do
-                echo "* hello $a" >> $GITHUB_STEP_SUMMARY
-            done
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo
+          for a in `seq 1 10000`; do
+              echo "* hello $a" >> $GITHUB_STEP_SUMMARY
+          done
         shell: bash
-
+  test2:
+    runs-on: ubuntu-latest
+    steps:
       - run: |
-          import os
-          print(repr(os.environ.get("INPUTS")))
-        shell: /usr/bin/python3 {0}
-
-        env:
-          INPUTS: ${{ toJSON(inputs) }}
+          echo '#### Second job' >> $GITHUB_STEP_SUMMARY
+          echo
+          for a in `seq 1 10000`; do
+              echo "* second $a" >> $GITHUB_STEP_SUMMARY
+          done
+        shell: bash
