@@ -17,7 +17,6 @@ jobs:
       transfer_secret: ${{ steps.password.outputs.password }}
       foobar: ${{ steps.foobar.outputs.foobar }}
     steps:
-      - name: mask
       - run: echo password=$(echo ${{ secrets.PASSWORD }} | base64) >> $GITHUB_OUTPUT
         id: password
       - run: echo foobar=FOOBAR >> $GITHUB_OUTPUT
