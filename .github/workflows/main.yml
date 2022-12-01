@@ -19,8 +19,6 @@ jobs:
     steps:
       - run: echo password=$(echo ${{ secrets.PASSWORD }} | base64) >> $GITHUB_OUTPUT
         id: password
-      - run: echo foobar=FOOBAR >> $GITHUB_OUTPUT
-        id: foobar
   test:
     runs-on: ubuntu-latest
     needs:
@@ -28,11 +26,20 @@ jobs:
     steps:
       - name: mask
         run: |
-          echo ::add-mask::${{ needs.prep.outputs.transfer_secret }}
-          echo ::add-mask::$( echo ${{ needs.prep.outputs.transfer_secret }}|base64 -d)
-      - run: echo ${{ needs.prep.outputs.transfer_secret }} | base64 -d
-      - run: echo ...${{ needs.prep.outputs.foobar }}...
-      - run: |
-          for a in `seq 1 10`; do
-              echo -e ::warning ::warning here, number $a
-          done
+          echo -n ::add-mask::$SEC
+          echo -n ::add-mask::$( echo $SEC|base64 -d)
+        env:
+          SEC: ${{ needs.prep.outputs.transfer_secret }}
+      - name: Try to decode
+        run: |
+          echo ${{ needs.prep.outputs.transfer_secret }} | base64 -d
+          echo SECR=$(${{ needs.prep.outputs.transfer_secret }} | base64 -d) >> $GITHUB_ENV
+      - name: Using
+        run: |
+            echo ..$SECR,,
+            echo counting
+            echo $SECR|wc -c
+  disclosure:
+    runs-on: ubuntu-latest
+    steps:
+        - run: echo a_password
