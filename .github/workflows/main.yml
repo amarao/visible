@@ -10,36 +10,41 @@ name: test
   push:
 
 jobs:
-  prep:
-    runs-on: ubuntu-latest
-    environment: production
-    outputs:
-      transfer_secret: ${{ steps.password.outputs.password }}
-      foobar: ${{ steps.foobar.outputs.foobar }}
-    steps:
-      - run: echo password=$(echo ${{ secrets.PASSWORD }} | base64) >> $GITHUB_OUTPUT
-        id: password
   test:
     runs-on: ubuntu-latest
-    needs:
-      - prep
+    environment: production
     steps:
-      - name: mask
-        run: |
-          echo -n ::add-mask::$SEC
-          echo -n ::add-mask::$( echo $SEC|base64 -d)
+      - run: sudo apt update && sudo apt install -y bsdextrautils
+      - run: echo "$FOOBAR" | hexdump -Cv
         env:
-          SEC: ${{ needs.prep.outputs.transfer_secret }}
-      - name: Try to decode
-        run: |
-          echo ${{ needs.prep.outputs.transfer_secret }} | base64 -d
-          echo SECR=$(${{ needs.prep.outputs.transfer_secret }} | base64 -d) >> $GITHUB_ENV
-      - name: Using
-        run: |
-            echo ..$SECR,,
-            echo counting
-            echo $SECR|wc -c
-  disclosure:
-    runs-on: ubuntu-latest
-    steps:
-        - run: echo a_password
+          FOOBAR: "${{ secrets.multiline }}"
+  #   outputs:
+  #     transfer_secret: ${{ steps.password.outputs.password }}
+  #     foobar: ${{ steps.foobar.outputs.foobar }}
+  #   steps:
+  #     - run: echo password=$(echo ${{ secrets.PASSWORD }} | base64) >> $GITHUB_OUTPUT
+  #       id: password
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - prep
+  #   steps:
+  #     - name: mask
+  #       run: |
+  #         echo -n ::add-mask::$SEC
+  #         echo -n ::add-mask::$( echo $SEC|base64 -d)
+  #       env:
+  #         SEC: ${{ needs.prep.outputs.transfer_secret }}
+  #     - name: Try to decode
+  #       run: |
+  #         echo ${{ needs.prep.outputs.transfer_secret }} | base64 -d
+  #         echo SECR=$(${{ needs.prep.outputs.transfer_secret }} | base64 -d) >> $GITHUB_ENV
+  #     - name: Using
+  #       run: |
+  #           echo ..$SECR,,
+  #           echo counting
+  #           echo $SECR|wc -c
+  # disclosure:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #       - run: echo a_password
