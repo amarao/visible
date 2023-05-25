@@ -30,12 +30,8 @@ jobs:
         run: gh pr diff --name-only ${{ github.event.number }}
 
       - name: Report labels
-        run: |
-          echo PR with labels
-          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
-
-      - name: Other report
         run: gh api repos/amarao/debug/pulls/${{ github.event.number }} --jq '.labels.[].name'
+
       - name: Validate changes scope
         run: |
           import subprocess
@@ -45,29 +41,47 @@ jobs:
           cmd = "gh pr diff --name-only ${{ github.event.number }}"
           files = subprocess.check_output(cmd, shell=True)
 
+          content_good = False
+          label_good = False
           for name in files.decode("utf-8").splitlines():
             if not name.startswith("good/"):
               print(f"Found {name}. Automerge is not possible")
-              with open(os.environ["GITHUB_OUTPUT"], "w") as f:
-                f.write("automerge=dont\n")
-              sys.exit(0)
-          print("It's ok to automerge")
+              break
+          else:
+            print("Content OK")
+            content_good = True
+
+          cmd = "gh api repos/amarao/debug/pulls/${{ github.event.number }} --jq '.labels.[].name'"
+          labels = subprocess.check_output(cmd, shell=True)
+          if "automerge" in labels.decode('UTF-8'):
+            print("Label OK")
+            label_good = True
+          else:
+            print("Can't find automerge in labels")
+            label_good = False
           with open(os.environ["GITHUB_OUTPUT"], "w") as f:
-                f.write("automerge=merge\n")
+                if content_good:
+                  f.write("content=good\n")
+                else:
+                  f.write("content=bad\n")
+                if label_good:
+                  f.write("label=good\n")
+                else:
+                  f.write("label=bad\n")
         shell: python {0}
         id: check
 
       - name: Merge
-        if: "${{ steps.check.outputs.automerge == 'merge' && contains(github.event.pull_request.labels.*.name, 'automerge') }}"
+        if: "${{ steps.check.outputs.content == 'good' &&  steps.check.outputs.label == 'good' }}"
         run: |
           # gh pr merge ${{ github.event.number }} --auto -d --merge
           # gh pr comment ${{ github.event.number }} --body "This PR was automerged."
           gh pr comment ${{ github.event.number }} --body "I really want to merge this, but grumpy operators keep me on leash."
 
       - name: Refuse to merge because of the content
-        if: "${{ steps.check.outputs.automerge != 'merge' }}"
+        if: "${{ steps.check.outputs.content != 'good' }}"
         run: gh pr comment ${{ github.event.number }} --body "This PR can not be merged automatically, as it contains non-trivial changes"
 
       - name: Refuse to merge because of the content
-        if: "${{ !contains(github.event.pull_request.labels.*.name, 'automerge') }}"
+        if: "${{ steps.check.outputs.label != 'good' }}"
         run: gh pr comment ${{ github.event.number }} --body "This PR did not have 'automerge' label at the moment of creation, so I won't merge it."
