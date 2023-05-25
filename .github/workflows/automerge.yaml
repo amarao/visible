@@ -32,7 +32,7 @@ jobs:
       - name: Report labels
         run: |
           echo PR with labels
-          echo ${{ join(github.event.pull_request.labels.*.name, ', ') }}
+          echo ${{ toJson(github.event.pull_request.labels.*.name) }}
 
       - name: Validate changes scope
         run: |
