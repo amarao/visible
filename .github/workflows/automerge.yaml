@@ -29,16 +29,13 @@ jobs:
       - name: Report diff
         run: gh pr diff --name-only ${{ github.event.number }}
 
-      - name: Wait for labels
-        run: sleep 10
-
       - name: Report labels
         run: |
           echo PR with labels
           echo ${{ toJson(github.event.pull_request.labels.*.name) }}
 
       - name: Other report
-        run: gh api repos/$OWNER/$REPO_NAME/pulls/$PULL_REQUEST_NUMBER --jq '.labels.[].name'
+        run: gh api repos/amarao/debug/pulls/${{ github.event.number }} --jq '.labels.[].name'
       - name: Validate changes scope
         run: |
           import subprocess
