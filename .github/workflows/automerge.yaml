@@ -29,6 +29,9 @@ jobs:
       - name: Report diff
         run: gh pr diff --name-only ${{ github.event.number }}
 
+      - name: Wait for labels
+        run: sleep 10
+
       - name: Report labels
         run: |
           echo PR with labels
