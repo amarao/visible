@@ -37,6 +37,8 @@ jobs:
           echo PR with labels
           echo ${{ toJson(github.event.pull_request.labels.*.name) }}
 
+      - name: Other report
+        run: gh api repos/$OWNER/$REPO_NAME/pulls/$PULL_REQUEST_NUMBER --jq '.labels.[].name'
       - name: Validate changes scope
         run: |
           import subprocess
