@@ -14,11 +14,15 @@ jobs:
           ref: ${{ github.ref }}
       - name: Bump
         run: date > good/foo
+      - name: Get JWT token
+        run: python3 get_token.py
+        env:
+          PRIVATE_KEY: ${{ secrets.MRPULIN_PRIVATE_KEY }}"
       - name: Create PR
         uses: ./.github/actions/create-pull-request
         with:
             base: master
-            token: ${{ github.token }}
+            token: ${{ env.ghs_token }}
             labels: |
               bump
               automerge
