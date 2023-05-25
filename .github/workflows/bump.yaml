@@ -1,11 +1,10 @@
 name: "BUMP"
 
 on:
- workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   bump:
-
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -21,14 +20,15 @@ jobs:
       - name: Create PR
         uses: ./.github/actions/create-pull-request
         with:
-            base: master
-            token: ${{ env.ghs_token }}
-            labels: |
-              bump
-              automerge
-            branch: bump-${{ github.sha }}
-            commit-message: "chore: Bump"
-            title: "Bump for ${{ github.sha }}"
-            delete-branch: true
-            body: |
-              Bump
+          base: master
+          token: ${{ env.ghs_token }}
+          labels: |
+            bump
+            automerge
+
+          branch: bump-${{ github.sha }}
+          commit-message: "chore: Bump"
+          title: "Bump for ${{ github.sha }}"
+          delete-branch: true
+          body: |
+            Bump
