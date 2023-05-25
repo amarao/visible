@@ -1,0 +1,67 @@
+name: "Automerge"
+
+"on":
+  pull_request:
+    types:
+      - opened
+    paths:
+      - good/*
+      - good/**
+
+# permissions:
+#   contents: read
+#   packages: read
+
+jobs:
+  automerge:
+    runs-on: ubuntu-20.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+    outputs:
+      automerge:
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Report diff
+        run: gh pr diff --name-only ${{ github.event.number }}
+
+      - name: Report labels
+        run: |
+          echo PR with labels
+          echo ${{ join(github.event.pull_request.labels.*.name, ', ') }}
+
+      - name: Validate changes scope
+        run: |
+          import subprocess
+          import os
+          import sys
+
+          cmd = "gh pr diff --name-only ${{ github.event.number }}"
+          files = subprocess.check_output(cmd, shell=True)
+
+          for name in files.decode("utf-8").splitlines():
+            if not name.startswith("good/"):
+              print(f"Found {name}. Automerge is not possible")
+              with open(os.environ["GITHUB_OUTPUT"], "w") as f:
+                f.write("automerge=dont\n")
+              sys.exit(0)
+          print("It's ok to automerge")
+          with open(os.environ["GITHUB_OUTPUT"], "w") as f:
+                f.write("automerge=merge\n")
+        shell: python {0}
+        id: check
+
+      - name: Merge
+        if: "${{ steps.check.outputs.automerge == 'merge' && contains(github.event.pull_request.labels.*.name, 'automerge') }}"
+        run: |
+          gh pr merge ${{ github.event.number }} --auto -d --merge
+          gh pr comment ${{ github.event.number }} --body "This PR was automerged."
+
+      - name: Refuse to merge
+        if: "${{ !(steps.check.outputs.automerge == 'merge' && contains(github.event.pull_request.labels.*.name, 'automerge')) }}"
+        run: gh pr comment ${{ github.event.number }}
+          --body "This PR can not be merged automatically, as it
+            contains non-trivial changes or it did not have label 'automerge' at the moment of PR creation"
