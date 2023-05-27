@@ -32,6 +32,9 @@ jobs:
       - name: Report labels
         run: gh api repos/amarao/debug/pulls/${{ github.event.number }} --jq '.labels.[].name'
 
+      - name: Report author
+        run: gh pr view ${{ github.event.number }} --json author --jq '.author'
+
       - name: Validate changes scope
         run: |
           import subprocess
@@ -43,6 +46,8 @@ jobs:
 
           content_good = False
           label_good = False
+          author_good = False
+
           for name in files.decode("utf-8").splitlines():
             if not name.startswith("good/"):
               print(f"Found {name}. Automerge is not possible")
@@ -59,6 +64,18 @@ jobs:
           else:
             print("Can't find automerge in labels")
             label_good = False
+
+
+          cmd = "gh pr view ${{ github.event.number }} --json author --jq '.author'"
+          author = subprocess.check_output(cmd, shell=True)
+
+          if author.decode('utf-8') == 'mrpulin':
+            print("PR Author is good")
+            author_good = True
+          else:
+            print("PR Author is wrong")
+            author_good = False
+
           with open(os.environ["GITHUB_OUTPUT"], "w") as f:
                 if content_good:
                   f.write("content=good\n")
@@ -68,11 +85,15 @@ jobs:
                   f.write("label=good\n")
                 else:
                   f.write("label=bad\n")
+                if author_good:
+                  f.write("author=good\n")
+                else:
+                  f.write("author=bad\n")
         shell: python {0}
         id: check
 
       - name: Merge
-        if: "${{ steps.check.outputs.content == 'good' &&  steps.check.outputs.label == 'good' }}"
+        if: "${{ steps.check.outputs.content == 'good' &&  steps.check.outputs.label == 'good' && steps.check.outputs.author == 'good'}}"
         run: |
           gh pr merge ${{ github.event.number }} --auto -d --merge
           gh pr comment ${{ github.event.number }} --body "This PR was automerged."
@@ -84,3 +105,7 @@ jobs:
       - name: Refuse to merge because of the content
         if: "${{ steps.check.outputs.label != 'good' }}"
         run: gh pr comment ${{ github.event.number }} --body "This PR did not have 'automerge' label at the moment of creation, so I won't merge it."
+
+      - name: Refuse to merge because of the author
+        if: "${{ steps.check.outputs.author != 'good' }}"
+        run: gh pr comment ${{ github.event.number }} --body "This PR wasn't authored by MrPulin, so I don't automerge it."
