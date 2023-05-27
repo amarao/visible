@@ -1,0 +1,14 @@
+name: "deploy"
+
+on:
+  workflow_dispatch:
+  push:
+    branch:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Report
+        run: echo Deployed
