@@ -93,11 +93,18 @@ jobs:
         shell: python {0}
         id: check
 
+      - name: Get JWT token
+        run: python3 get_token.py
+        env:
+          PRIVATE_KEY: ${{ secrets.MRPULIN_PRIVATE_KEY }}"
+
       - name: Merge
         if: "${{ steps.check.outputs.content == 'good' &&  steps.check.outputs.label == 'good' && steps.check.outputs.author == 'good'}}"
         run: |
           gh pr merge ${{ github.event.number }} --auto -d --merge
           gh pr comment ${{ github.event.number }} --body "This PR was automerged."
+        env:
+          GH_TOKEN: ${{ env.ghs_token }}
 
       - name: Refuse to merge because of the content
         if: "${{ steps.check.outputs.content != 'good' }}"
