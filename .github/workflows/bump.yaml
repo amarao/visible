@@ -13,6 +13,8 @@ jobs:
           ref: ${{ github.ref }}
       - name: Bump
         run: date > good/foo
+      - name: Report
+        run: cat good/foo
       - name: Get JWT token
         run: python3 get_token.py
         env:
