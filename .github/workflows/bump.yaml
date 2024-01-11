@@ -24,6 +24,18 @@ on:
       opt7.dom.in:
         type: boolean
         required: true
+      opt8.dom.in:
+        type: boolean
+        required: true
+      opt9.dom.in:
+        type: boolean
+        required: true
+      opt10.dom.in:
+        type: boolean
+        required: true
+      opt11.dom.in:
+        type: boolean
+        required: true
       state:
         description: "State of lock: present/absent"
         type: choice
