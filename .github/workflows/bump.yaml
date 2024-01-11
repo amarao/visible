@@ -1,33 +1,49 @@
 name: "BUMP"
-
 on:
   workflow_dispatch:
+    inputs:
+      opt1.dom.in:
+        description: 'opt1.dom.in (mock)'
+        type: boolean
+        required: true
+      opt2.dom.in:
+        type: boolean
+        required: true
+      opt3.dom.in:
+        type: boolean
+        required: true
+      opt4.dom.in:
+        type: boolean
+        required: true
+      opt5.dom.in:
+        required: true
+        type: boolean
+      opt6.dom.in:
+        required: true
+        type: boolean
+      opt7.dom.in:
+        type: boolean
+        required: true
+      state:
+        description: "State of lock: present/absent"
+        type: choice
+        required: true
+        options:
+          - present
+          - absent
+        default: 'present'
 
 jobs:
-  bump:
+  test:
     runs-on: ubuntu-20.04
+    env:
+      INPUTS: ${{ toJSON(inputs) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
-      - name: Bump
-        run: date > good/foo
-      - name: Report
-        run: cat good/foo
-      - name: Get JWT token
-        run: python3 get_token.py
-        env:
-          PRIVATE_KEY: ${{ secrets.MRPULIN_PRIVATE_KEY }}"
-      - name: Create PR
-        uses: ./.github/actions/create-pull-request
-        with:
-          base: master
-          token: ${{ env.ghs_token }}
-          labels: automerge
-          branch: bump-${{ github.sha }}
-          commit-message: "chore: Bump"
-          title: "Bump for ${{ github.sha }}"
-          delete-branch: true
-          body: |
-            Bump
+      - name: report
+        run: echo $INPUTS
+      - name: report_encoded
+        run: echo $INPUTS | base64
