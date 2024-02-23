@@ -1,4 +1,4 @@
-name: "deploy"
+name: "end"
 
 on:
   workflow_dispatch:
