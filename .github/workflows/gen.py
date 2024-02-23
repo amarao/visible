@@ -15,8 +15,8 @@ jobs:
 import yaml
 
 
-for a in range(2, 501):
+for a in range(0, 99999):
     w = yaml.safe_load(original)
-    w["name"] = f"example_{a}"
-    with open(f"example_{a}.yaml", "w") as f:
+    w["name"] = f"example_{a:05}"
+    with open(f"example_{a:05}.yaml", "w") as f:
         f.write(yaml.dump(w))
